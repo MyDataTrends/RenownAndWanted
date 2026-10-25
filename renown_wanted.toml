@@ -1,0 +1,280 @@
+# Renown and Wanted: the plugin as data (agent/modgen.py). Build: python -I dev/RenownWanted/build.py
+# Spec: agent/specs/crime-reputation.spec.md. Only Skyrim.esm is a master; everything else is read through stats.
+[plugin]
+name = "RenownWanted.esp"
+folder = "Lalaland-lab - RenownWanted"
+masters = ["Skyrim.esm"]
+light = true
+author = "BigQuinn"
+
+[[global]]
+edid = "RW_Enabled"
+value = 1.0
+
+[[global]]
+edid = "RW_HuntersEnabled"
+value = 1.0
+
+[[global]]
+edid = "RW_Notifications"
+value = 1.0
+
+[[global]]
+edid = "RW_Debug"
+value = 0.0
+
+[[global]]
+edid = "RW_DebugBounty"
+value = 0.0
+
+[[global]]
+edid = "RW_DecayBase"
+value = 100.0
+
+[[global]]
+edid = "RW_InfamyDivisor"
+value = 250.0
+
+[[global]]
+edid = "RW_ViolentMult"
+value = 2.0
+
+[[global]]
+edid = "RW_FloorShare"
+value = 0.5
+
+[[global]]
+edid = "RW_InfamyDailyDecay"
+value = 0.5
+
+[[global]]
+edid = "RW_RemedyDivisor"
+value = 1000.0
+
+[[global]]
+edid = "RW_HuntThreshold"
+value = 1000.0
+
+[[global]]
+edid = "RW_HuntIntervalMax"
+value = 7.0
+
+[[global]]
+edid = "RW_RepScale"
+value = 1.0
+
+[[global]]
+edid = "RW_FavoredThreshold"
+value = 75.0
+
+[[global]]
+edid = "RW_KnownHeroThreshold"
+value = 75.0
+
+[[global]]
+edid = "RW_DreadThreshold"
+value = 60.0
+
+[[global]]
+edid = "RW_CleanThreshold"
+value = 10.0
+
+[[global]]
+edid = "RW_RespectedThreshold"
+value = 60.0
+
+[[global]]
+edid = "RW_Infamy"
+value = 0.0
+
+[[global]]
+edid = "RW_InfamyPeak"
+value = 0.0
+
+[[global]]
+edid = "RW_Renown"
+value = 0.0
+
+[[global]]
+edid = "RW_RepWhiterun"
+value = 0.0
+
+[[global]]
+edid = "RW_RepEastmarch"
+value = 0.0
+
+[[global]]
+edid = "RW_RepRift"
+value = 0.0
+
+[[global]]
+edid = "RW_RepHaafingar"
+value = 0.0
+
+[[global]]
+edid = "RW_RepReach"
+value = 0.0
+
+[[global]]
+edid = "RW_RepPale"
+value = 0.0
+
+[[global]]
+edid = "RW_RepFalkreath"
+value = 0.0
+
+[[global]]
+edid = "RW_RepHjaalmarch"
+value = 0.0
+
+[[global]]
+edid = "RW_RepWinterhold"
+value = 0.0
+
+[[global]]
+edid = "RW_InfWhiterun"
+value = 0.0
+
+[[global]]
+edid = "RW_InfEastmarch"
+value = 0.0
+
+[[global]]
+edid = "RW_InfRift"
+value = 0.0
+
+[[global]]
+edid = "RW_InfHaafingar"
+value = 0.0
+
+[[global]]
+edid = "RW_InfReach"
+value = 0.0
+
+[[global]]
+edid = "RW_InfPale"
+value = 0.0
+
+[[global]]
+edid = "RW_InfFalkreath"
+value = 0.0
+
+[[global]]
+edid = "RW_InfHjaalmarch"
+value = 0.0
+
+[[global]]
+edid = "RW_InfWinterhold"
+value = 0.0
+
+# Favored: Haggling00 (sell x1.10, buy x0.91) without its "not Haggling20" conditions
+[[copy]]
+edid = "RW_PerkFavored"
+from = "Haggling00"
+drop = ["PRKC", "CTDA", "NNAM"]
+name = "Favored of the Hold"
+desc = "This hold holds you in high regard: merchants here give you better prices."
+
+# Clean Hands: the same, 5%
+[[copy]]
+edid = "RW_PerkClean"
+from = "Haggling00"
+drop = ["PRKC", "CTDA", "NNAM"]
+patch = [{ sub = "EPFD", offset = 0, float = 1.05 }, { sub = "EPFD", offset = 0, float = 0.95, nth = 1 }]
+name = "Clean Hands"
+desc = "No stain on your name: merchants everywhere give you slightly better prices."
+
+# Dread: Intimidation (intimidation x2); its perk-tree requirements do not apply to AddPerk
+[[copy]]
+edid = "RW_PerkDread"
+from = "Intimidation"
+drop = ["CTDA", "NNAM"]
+name = "Dread"
+desc = "Your infamy goes before you: intimidation comes easily."
+
+[[quest]]
+edid = "RW_MCMQuest"
+name = "Renown and Wanted MCM"
+script = "RW_MCM"
+
+[[quest]]
+edid = "RW_MainQuest"
+name = "Renown and Wanted"
+script = "RW_Main"
+player_alias_script = "RW_PlayerAlias"
+[quest.props]
+HoldWhiterun = "WhiterunHoldLocation"
+CrimeWhiterun = "CrimeFactionWhiterun"
+gRepWhiterun = "RW_RepWhiterun"
+gInfWhiterun = "RW_InfWhiterun"
+HoldEastmarch = "EastmarchHoldLocation"
+CrimeEastmarch = "CrimeFactionEastmarch"
+gRepEastmarch = "RW_RepEastmarch"
+gInfEastmarch = "RW_InfEastmarch"
+HoldRift = "RiftHoldLocation"
+CrimeRift = "CrimeFactionRift"
+gRepRift = "RW_RepRift"
+gInfRift = "RW_InfRift"
+HoldHaafingar = "HaafingarHoldLocation"
+CrimeHaafingar = "CrimeFactionHaafingar"
+gRepHaafingar = "RW_RepHaafingar"
+gInfHaafingar = "RW_InfHaafingar"
+HoldReach = "ReachHoldLocation"
+CrimeReach = "CrimeFactionReach"
+gRepReach = "RW_RepReach"
+gInfReach = "RW_InfReach"
+HoldPale = "PaleHoldLocation"
+CrimePale = "CrimeFactionPale"
+gRepPale = "RW_RepPale"
+gInfPale = "RW_InfPale"
+HoldFalkreath = "FalkreathHoldLocation"
+CrimeFalkreath = "CrimeFactionFalkreath"
+gRepFalkreath = "RW_RepFalkreath"
+gInfFalkreath = "RW_InfFalkreath"
+HoldHjaalmarch = "HjaalmarchHoldLocation"
+CrimeHjaalmarch = "CrimeFactionHjaalmarch"
+gRepHjaalmarch = "RW_RepHjaalmarch"
+gInfHjaalmarch = "RW_InfHjaalmarch"
+HoldWinterhold = "WinterholdHoldLocation"
+CrimeWinterhold = "CrimeFactionWinterhold"
+gRepWinterhold = "RW_RepWinterhold"
+gInfWinterhold = "RW_InfWinterhold"
+gEnabled = "RW_Enabled"
+gHuntersEnabled = "RW_HuntersEnabled"
+gNotifications = "RW_Notifications"
+gDebug = "RW_Debug"
+gDecayBase = "RW_DecayBase"
+gInfamyDivisor = "RW_InfamyDivisor"
+gViolentMult = "RW_ViolentMult"
+gFloorShare = "RW_FloorShare"
+gInfamyDailyDecay = "RW_InfamyDailyDecay"
+gRemedyDivisor = "RW_RemedyDivisor"
+gHuntThreshold = "RW_HuntThreshold"
+gHuntIntervalMax = "RW_HuntIntervalMax"
+gFavoredThreshold = "RW_FavoredThreshold"
+gKnownHeroThreshold = "RW_KnownHeroThreshold"
+gDreadThreshold = "RW_DreadThreshold"
+gCleanThreshold = "RW_CleanThreshold"
+gRespectedThreshold = "RW_RespectedThreshold"
+gInfamy = "RW_Infamy"
+gInfamyPeak = "RW_InfamyPeak"
+gRenown = "RW_Renown"
+ThaneQuest = "FavorJarlsMakeFriends"
+CWOwner = "CWOwner"
+LocTypeHabitation = "LocTypeHabitation"
+MercMelee = "LCharBanditMeleeAny"
+MercMissile = "LCharBanditMissile"
+MercBoss = "LCharBanditBoss"
+GuardImp = "LCharGuardImperial"
+GuardSons = "LCharGuardSons"
+SoldierImp = "LCharSoldierImperial"
+SoldierSons = "LCharSoldierSons"
+CaptainImp = "LCharGuardImperialVoiceTypeMaleNordCommander"
+CaptainSons = "LCharGuardSonsVoiceTypeMaleNordCommander"
+PerkFavored = "RW_PerkFavored"
+PerkClean = "RW_PerkClean"
+PerkDread = "RW_PerkDread"
+gRepScale = "RW_RepScale"
+gDebugBounty = "RW_DebugBounty"
+ActorTypeDragon = "ActorTypeDragon"
+LocTypePlayerHouse = "LocTypePlayerHouse"

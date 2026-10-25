@@ -1,0 +1,528 @@
+{
+  "modName": "RenownWanted",
+  "displayName": "Renown and Wanted",
+  "minMcmVersion": 11,
+  "pages": [
+    {
+      "pageDisplayName": "Standing",
+      "cursorFillMode": "topToBottom",
+      "content": [
+        {
+          "text": "Renown (all of Skyrim)",
+          "type": "slider",
+          "help": "Big milestones: main quest, guilds, the war, DLC. Never drops.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|815",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Infamy (all holds)",
+          "type": "slider",
+          "help": "Sum of every hold's infamy. Rises with bounties.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|813",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Worst infamy ever",
+          "type": "slider",
+          "help": "Infamy can be remedied only down to a share of each hold's worst.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|814",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Reputation: Whiterun",
+          "type": "slider",
+          "help": "Quests, dungeons, dragons, property and thanehood in this hold. Never drops.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|816",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Reputation: Eastmarch",
+          "type": "slider",
+          "help": "Quests, dungeons, dragons, property and thanehood in this hold. Never drops.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|817",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Reputation: Rift",
+          "type": "slider",
+          "help": "Quests, dungeons, dragons, property and thanehood in this hold. Never drops.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|818",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Reputation: Haafingar",
+          "type": "slider",
+          "help": "Quests, dungeons, dragons, property and thanehood in this hold. Never drops.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|819",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Reputation: Reach",
+          "type": "slider",
+          "help": "Quests, dungeons, dragons, property and thanehood in this hold. Never drops.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|81A",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Reputation: Pale",
+          "type": "slider",
+          "help": "Quests, dungeons, dragons, property and thanehood in this hold. Never drops.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|81B",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Reputation: Falkreath",
+          "type": "slider",
+          "help": "Quests, dungeons, dragons, property and thanehood in this hold. Never drops.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|81C",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Reputation: Hjaalmarch",
+          "type": "slider",
+          "help": "Quests, dungeons, dragons, property and thanehood in this hold. Never drops.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|81D",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Reputation: Winterhold",
+          "type": "slider",
+          "help": "Quests, dungeons, dragons, property and thanehood in this hold. Never drops.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|81E",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Infamy: Whiterun",
+          "type": "slider",
+          "help": "From bounties here. Paying, jail and time lower it, down to its floor.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|81F",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Infamy: Eastmarch",
+          "type": "slider",
+          "help": "From bounties here. Paying, jail and time lower it, down to its floor.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|820",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Infamy: Rift",
+          "type": "slider",
+          "help": "From bounties here. Paying, jail and time lower it, down to its floor.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|821",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Infamy: Haafingar",
+          "type": "slider",
+          "help": "From bounties here. Paying, jail and time lower it, down to its floor.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|822",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Infamy: Reach",
+          "type": "slider",
+          "help": "From bounties here. Paying, jail and time lower it, down to its floor.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|823",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Infamy: Pale",
+          "type": "slider",
+          "help": "From bounties here. Paying, jail and time lower it, down to its floor.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|824",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Infamy: Falkreath",
+          "type": "slider",
+          "help": "From bounties here. Paying, jail and time lower it, down to its floor.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|825",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Infamy: Hjaalmarch",
+          "type": "slider",
+          "help": "From bounties here. Paying, jail and time lower it, down to its floor.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|826",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Infamy: Winterhold",
+          "type": "slider",
+          "help": "From bounties here. Paying, jail and time lower it, down to its floor.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|827",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "formatString": "{0}"
+          }
+        }
+      ]
+    },
+    {
+      "pageDisplayName": "Bounty and infamy",
+      "cursorFillMode": "topToBottom",
+      "content": [
+        {
+          "text": "Bounty fades per day away",
+          "type": "slider",
+          "help": "Gold per game day while you are outside the hold; faster with fame, slower with infamy.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|805",
+            "min": 0,
+            "max": 500,
+            "step": 10,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Bounty per infamy point",
+          "type": "slider",
+          "help": "A new bounty adds bounty / this to the hold's infamy.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|806",
+            "min": 50,
+            "max": 1000,
+            "step": 10,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Violent crimes count x",
+          "type": "slider",
+          "help": "Assault and murder bounties weigh this much more.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|807",
+            "min": 1,
+            "max": 5,
+            "step": 0.5,
+            "formatString": "{1}"
+          }
+        },
+        {
+          "text": "Infamy floor (share of worst)",
+          "type": "slider",
+          "help": "Infamy never goes below this share of the worst it reached in that hold.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|808",
+            "min": 0,
+            "max": 1,
+            "step": 0.05,
+            "formatString": "{2}"
+          }
+        },
+        {
+          "text": "Infamy fades per day",
+          "type": "slider",
+          "help": "Down to the floor.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|809",
+            "min": 0,
+            "max": 5,
+            "step": 0.1,
+            "formatString": "{1}"
+          }
+        },
+        {
+          "text": "Gold paid per infamy point removed",
+          "type": "slider",
+          "help": "Paying a bounty (or jail) removes paid / this, down to the floor.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|80A",
+            "min": 100,
+            "max": 5000,
+            "step": 100,
+            "formatString": "{0}"
+          }
+        }
+      ]
+    },
+    {
+      "pageDisplayName": "Hunters",
+      "cursorFillMode": "topToBottom",
+      "content": [
+        {
+          "text": "Hunters",
+          "type": "toggle",
+          "help": "Holds send bounty hunters and soldiers after you.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|801"
+          }
+        },
+        {
+          "text": "Hunted above bounty",
+          "type": "slider",
+          "help": "A hold sends hunters while your bounty there is above this.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|80B",
+            "min": 0,
+            "max": 5000,
+            "step": 100,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Days between parties (calm)",
+          "type": "slider",
+          "help": "At heat 1 a party comes this often; hotter = more often (at least daily).",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|80C",
+            "min": 1,
+            "max": 14,
+            "step": 1,
+            "formatString": "{0}"
+          }
+        }
+      ]
+    },
+    {
+      "pageDisplayName": "Rewards",
+      "cursorFillMode": "topToBottom",
+      "content": [
+        {
+          "text": "Reputation gain x",
+          "type": "slider",
+          "help": "Scales every reputation gain.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|80D",
+            "min": 0.25,
+            "max": 3,
+            "step": 0.25,
+            "formatString": "{2}"
+          }
+        },
+        {
+          "text": "Favored of the Hold at fame",
+          "type": "slider",
+          "help": "Better prices in that hold.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|80E",
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Known Hero at renown",
+          "type": "slider",
+          "help": "New non-violent bounties are halved.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|80F",
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Dread at infamy",
+          "type": "slider",
+          "help": "Intimidation comes easily.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|810",
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Feared and Respected at",
+          "type": "slider",
+          "help": "Infamy and renown both this high: hunter parties come one tier lighter.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|812",
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Clean Hands below infamy",
+          "type": "slider",
+          "help": "Slightly better prices everywhere while infamy (and its worst) stay this low.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|811",
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "formatString": "{0}"
+          }
+        }
+      ]
+    },
+    {
+      "pageDisplayName": "General",
+      "cursorFillMode": "topToBottom",
+      "content": [
+        {
+          "text": "Mod enabled",
+          "type": "toggle",
+          "help": "Master switch (the hourly tick stops).",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|800"
+          }
+        },
+        {
+          "text": "Notifications",
+          "type": "toggle",
+          "help": "Messages for hunters, forgiven bounties and thanehood.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|802"
+          }
+        },
+        {
+          "text": "Debug log",
+          "type": "toggle",
+          "help": "Writes [RenownWanted] lines to the Papyrus log.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|803"
+          }
+        }
+      ]
+    }
+  ]
+}
