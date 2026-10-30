@@ -88,6 +88,39 @@ Perk Property PerkDread Auto
 Keyword Property ActorTypeDragon Auto
 Keyword Property LocTypePlayerHouse Auto
 
+; ---- 1.1: hold life. Residents of a hold that admires you become friends (vanilla's friendly greetings, low-value
+; items and beds in their homes, and it counts toward thanehood, whose friend counts are raised to offset that);
+; where your infamy is high they become rivals. Friends sometimes bring a gift. House prices follow your standing.
+GlobalVariable Property gFriendsOn Auto
+GlobalVariable Property gRivalsOn Auto
+GlobalVariable Property gRivalThreshold Auto
+GlobalVariable Property gGiftsOn Auto
+GlobalVariable Property gGiftChance Auto
+GlobalVariable Property gGiftCooldown Auto
+GlobalVariable Property gHousePricesOn Auto
+GlobalVariable Property gHouseSurcharge Auto
+GlobalVariable Property gHouseDiscount Auto
+GlobalVariable Property gThaneMajor Auto
+GlobalVariable Property gThaneMinor Auto
+GlobalVariable Property FriendsTotalMajorHold Auto
+GlobalVariable Property FriendsTotalMinorHold Auto
+GlobalVariable Property HPWhiterun Auto
+GlobalVariable Property HPWindhelm Auto
+GlobalVariable Property HPRiften Auto
+GlobalVariable Property HPSolitude Auto
+GlobalVariable Property HPMarkarth Auto
+Topic Property RelationshipHellos Auto
+FormList Property GiftsWhiterun Auto
+FormList Property GiftsEastmarch Auto
+FormList Property GiftsRift Auto
+FormList Property GiftsHaafingar Auto
+FormList Property GiftsReach Auto
+FormList Property GiftsPale Auto
+FormList Property GiftsFalkreath Auto
+FormList Property GiftsHjaalmarch Auto
+FormList Property GiftsWinterhold Auto
+FormList Property GiftsRare Auto
+
 ; ---- state (saved with the game)
 Location[] holds
 Faction[] crimes
@@ -106,6 +139,13 @@ Actor[] party
 float partyDay = 0.0
 int partyHold = -1
 bool busy = false  ; OnInit can fire twice when the quest is added to a running save; one Setup at a time
+; 1.1 (None on a 1.0 save until Setup fills them)
+float[] lastGift       ; game day of the last gift per hold
+float[] hpBase         ; each hold's house price before this mod scaled it (whatever plugin set it)
+bool reputationChecked = false
+int pendingGiftHold = -1
+FormList[] giftLists
+GlobalVariable[] hpG   ; the hold's house price global, None for holds without a city house to buy
 
 ; OnInit runs while a save is still loading (a quest added to a running game); the engine then reset this script's
 ; arrays mid-loop (2026-10-23: 'Cannot access an element of a None array' in Setup). Setup waits 2 s instead.
@@ -114,7 +154,13 @@ Event OnInit()
 EndEvent
 
 Event OnUpdate()
-	Setup()
+	if pendingGiftHold >= 0
+		int h = pendingGiftHold
+		pendingGiftHold = -1
+		GiveGift(Game.GetPlayer(), h)
+	else
+		Setup()
+	endif
 EndEvent
 
 Function OnGameLoad()
@@ -194,6 +240,7 @@ Function Setup()
 		initialized = true
 		Log("installed; renown " + gRenown.GetValue())
 	endif
+	SetupHoldLife()
 	RegisterEvents()
 	RegisterForSingleUpdateGameTime(1.0)
 	busy = false
@@ -228,6 +275,8 @@ Function Tick()
 		MaybeHunt(player, h, now)
 	endif
 	UpdatePerks(player, h)
+	ApplyThaneCounts()
+	HoldLife(player, h)
 	Log("tick: hold " + h + ", renown " + gRenown.GetValue() + ", infamy " + gInfamy.GetValue() + ", Whiterun bounty " + crimes[0].GetCrimeGold() + ", heat " + Heat(0) + ", fame " + Fame(0) + ", party " + partyHold)
 EndFunction
 
@@ -379,7 +428,12 @@ Function OnLocationChanged(Location akOld, Location akNew)
 		endif
 	endif
 	ProcessThanes()
-	UpdatePerks(player, CurrentHold(player))
+	int here = CurrentHold(player)
+	UpdatePerks(player, here)
+	HoldLife(player, here)
+	if akNew && here >= 0 && akNew.HasKeyword(LocTypeHabitation)
+		MaybeGift(here)
+	endif
 EndFunction
 
 int Function HoldOfLocation(Location loc)
@@ -698,6 +752,234 @@ Function CleanupParty(Actor player, float now)
 		endwhile
 		partyHold = -1
 	endif
+EndFunction
+
+; ---------------------------------------------------------------- hold life (1.1)
+Function SetupHoldLife()
+	if !lastGift
+		lastGift = new float[9]
+		int i = 0
+		while i < 9
+			lastGift[i] = -100.0
+			i += 1
+		endwhile
+	endif
+	if !hpBase
+		hpBase = new float[9]
+	endif
+	giftLists = new FormList[9]
+	giftLists[0] = GiftsWhiterun
+	giftLists[1] = GiftsEastmarch
+	giftLists[2] = GiftsRift
+	giftLists[3] = GiftsHaafingar
+	giftLists[4] = GiftsReach
+	giftLists[5] = GiftsPale
+	giftLists[6] = GiftsFalkreath
+	giftLists[7] = GiftsHjaalmarch
+	giftLists[8] = GiftsWinterhold
+	hpG = new GlobalVariable[9]  ; the five holds whose steward sells a city house (vanilla HousePurchase)
+	hpG[0] = HPWhiterun
+	hpG[1] = HPWindhelm
+	hpG[2] = HPRiften
+	hpG[3] = HPSolitude
+	hpG[4] = HPMarkarth
+	; Skyrim Reputation counts rank >= 1 with certain NPCs as favors done (its sr_rqc_scr_favor*.psc) and with beggars
+	; as charity: making residents friends would credit deeds never done. With it loaded, ranks are left alone unless
+	; the player turns them back on.
+	if !reputationChecked
+		reputationChecked = true
+		if Game.GetModByName("SkyrimReputation_SSE.esp") != 255
+			gFriendsOn.SetValue(0.0)
+			gRivalsOn.SetValue(0.0)
+			Notify("Skyrim Reputation is installed: hold friendships and rivalries are off (MCM: Hold life).")
+		endif
+	endif
+	ApplyThaneCounts()
+EndFunction
+
+; Vanilla counts friends toward a hold's thane quest (FavorJarlsMakeFriendsScript, through the Story Manager's
+; relationship-change event), up to FriendsTotalMajorHold / MinorHold (5 / 3). Friends made here count too, so the
+; totals are raised (MCM).
+Function ApplyThaneCounts()
+	if FriendsTotalMajorHold && gThaneMajor.GetValue() > 0.0
+		FriendsTotalMajorHold.SetValue(gThaneMajor.GetValue())
+	endif
+	if FriendsTotalMinorHold && gThaneMinor.GetValue() > 0.0
+		FriendsTotalMinorHold.SetValue(gThaneMinor.GetValue())
+	endif
+EndFunction
+
+Function HoldLife(Actor player, int h)
+	if h < 0 || !giftLists
+		return
+	endif
+	UpdateRelationships(player, h)
+	UpdateHousePrice(h)
+EndFunction
+
+; Residents of the hold loaded around you, at the neutral rank only: friends where the hold admires you (Favored),
+; rivals where your infamy there is high. Spouses, followers, guards and anyone at another rank are left alone. The
+; changed actors are remembered (StorageUtil) so rivals calm down when infamy fades, and the MCM can undo all of it.
+Function UpdateRelationships(Actor player, int h)
+	bool friends = gFriendsOn.GetValue() > 0.5 && Fame(h) >= gFavoredThreshold.GetValue()
+	bool rivals = gRivalsOn.GetValue() > 0.5 && infG[h].GetValue() >= gRivalThreshold.GetValue()
+	Actor[] near = PO3_SKSEFunctions.GetActorsByProcessingLevel(0)
+	int made = 0
+	int i = 0
+	while i < near.Length
+		Actor a = near[i]
+		if a && a != player && !a.IsDead() && !a.IsGuard() && !a.IsPlayerTeammate() && a.GetCrimeFaction() == crimes[h]
+			int rank = a.GetRelationshipRank(player)
+			if rank == 0
+				if friends
+					a.SetRelationshipRank(player, 1)
+					StorageUtil.FormListAdd(None, "RW_Friends", a, false)
+					made += 1
+				elseif rivals
+					a.SetRelationshipRank(player, -1)
+					StorageUtil.FormListAdd(None, "RW_Rivals", a, false)
+					made += 1
+				endif
+			elseif rank == -1 && !rivals && StorageUtil.FormListHas(None, "RW_Rivals", a)
+				a.SetRelationshipRank(player, 0)  ; infamy faded: the grudge goes with it
+				StorageUtil.FormListRemove(None, "RW_Rivals", a, true)
+				if friends
+					a.SetRelationshipRank(player, 1)
+					StorageUtil.FormListAdd(None, "RW_Friends", a, false)
+				endif
+			endif
+		endif
+		i += 1
+	endwhile
+	Log("hold " + h + ": fame " + Fame(h) + ", infamy " + infG[h].GetValue() + ", " + near.Length + " actors loaded, " + made + " now friends/rivals (friends " + friends + ", rivals " + rivals + ")")
+EndFunction
+
+; MCM: everyone this mod befriended or turned into a rival goes back to neutral, if they still have that rank
+Function ResetRelationships()
+	Actor player = Game.GetPlayer()
+	int n = 0
+	int i = StorageUtil.FormListCount(None, "RW_Friends")
+	while i > 0
+		i -= 1
+		Actor a = StorageUtil.FormListGet(None, "RW_Friends", i) as Actor
+		if a && a.GetRelationshipRank(player) == 1
+			a.SetRelationshipRank(player, 0)
+			n += 1
+		endif
+	endwhile
+	i = StorageUtil.FormListCount(None, "RW_Rivals")
+	while i > 0
+		i -= 1
+		Actor a = StorageUtil.FormListGet(None, "RW_Rivals", i) as Actor
+		if a && a.GetRelationshipRank(player) == -1
+			a.SetRelationshipRank(player, 0)
+			n += 1
+		endif
+	endwhile
+	StorageUtil.FormListClear(None, "RW_Friends")
+	StorageUtil.FormListClear(None, "RW_Rivals")
+	Debug.Notification("Renown and Wanted: " + n + " residents back to neutral.")
+EndFunction
+
+; The hold's city house: its price as the load order set it, + up to gHouseSurcharge % at infamy 100 there,
+; - up to gHouseDiscount % at fame 100. The steward shows and charges this global (HousePurchaseScript).
+Function UpdateHousePrice(int h)
+	GlobalVariable g = hpG[h]
+	if !g
+		return
+	endif
+	if hpBase[h] <= 0.0
+		hpBase[h] = g.GetValue()
+	endif
+	float mult = 1.0
+	if gHousePricesOn.GetValue() > 0.5
+		mult = 1.0 + gHouseSurcharge.GetValue() / 100.0 * infG[h].GetValue() / 100.0 - gHouseDiscount.GetValue() / 100.0 * Fame(h) / 100.0
+	endif
+	g.SetValue(Math.Floor(hpBase[h] * mult + 0.5) as float)
+EndFunction
+
+; Entering a town where the hold admires you: a chance (per visit, with a cooldown per hold) that a friend brings a gift.
+; The walk and the handoff run a few seconds later, off the location event.
+Function MaybeGift(int h)
+	if gGiftsOn.GetValue() < 0.5 || pendingGiftHold >= 0 || Fame(h) < gFavoredThreshold.GetValue()
+		Log("gift in hold " + h + ": not now (on " + gGiftsOn.GetValue() + ", fame " + Fame(h) + ")")
+		return
+	endif
+	if Utility.GetCurrentGameTime() - lastGift[h] < gGiftCooldown.GetValue() || Utility.RandomFloat(0.0, 100.0) >= gGiftChance.GetValue()
+		Log("gift in hold " + h + ": cooldown or chance")
+		return
+	endif
+	Log("gift in hold " + h + ": a friend will come")
+	pendingGiftHold = h
+	RegisterForSingleUpdate(8.0)
+EndFunction
+
+Function GiveGift(Actor player, int h)
+	if CurrentHold(player) != h || player.IsInCombat()
+		return
+	endif
+	Actor giver = PickGiver(player, h)
+	if !giver
+		Log("gift in hold " + h + ": no friend nearby")
+		return
+	endif
+	lastGift[h] = Utility.GetCurrentGameTime()
+	giver.PathToReference(player, 0.5)
+	if giver.GetDistance(player) > 400.0 || player.IsInCombat() || giver.IsInCombat()
+		return
+	endif
+	giver.SetLookAt(player)
+	giver.Say(RelationshipHellos)  ; vanilla's voiced friendly greetings, for rank >= 1 (the giver is a friend)
+	Utility.Wait(2.5)
+	Form item = PickGift(h)
+	if item
+		player.AddItem(item, 1, true)
+		Debug.Notification(giver.GetDisplayName() + " presses a gift into your hands: " + item.GetName() + ". \"For what you did for " + holdNames[h] + ".\"")
+		Log("gift in hold " + h + " from " + giver.GetDisplayName() + ": " + item.GetName())
+	endif
+	giver.ClearLookAt()
+EndFunction
+
+; a friend of yours from this hold, nearby, not busy: a random named resident among the first 16 found, or a generic
+; one when no named resident is around (2026-10-30 test: a nameless "Mercenary" brought the gift)
+Actor Function PickGiver(Actor player, int h)
+	Actor[] near = PO3_SKSEFunctions.GetActorsByProcessingLevel(0)
+	Actor[] named = new Actor[16]
+	Actor[] other = new Actor[16]
+	int nn = 0
+	int no = 0
+	int i = 0
+	while i < near.Length && nn < 16
+		Actor a = near[i]
+		if a && a != player && !a.IsDead() && !a.IsGuard() && !a.IsPlayerTeammate() && !a.IsInCombat() && a.GetCrimeFaction() == crimes[h] && a.GetRelationshipRank(player) >= 1 && a.GetDistance(player) < 2500.0
+			if a.GetActorBase().IsUnique()
+				named[nn] = a
+				nn += 1
+			elseif no < 16
+				other[no] = a
+				no += 1
+			endif
+		endif
+		i += 1
+	endwhile
+	if nn > 0
+		return named[Utility.RandomInt(0, nn - 1)]
+	elseif no > 0
+		return other[Utility.RandomInt(0, no - 1)]
+	endif
+	return None
+EndFunction
+
+; the hold's own gifts; at fame 80+ one time in four something finer
+Form Function PickGift(int h)
+	FormList l = giftLists[h]
+	if Fame(h) >= 80.0 && Utility.RandomInt(0, 3) == 0
+		l = GiftsRare
+	endif
+	if !l || l.GetSize() == 0
+		return None
+	endif
+	return l.GetAt(Utility.RandomInt(0, l.GetSize() - 1))
 EndFunction
 
 ; ---------------------------------------------------------------- perks

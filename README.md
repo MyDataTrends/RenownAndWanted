@@ -40,10 +40,33 @@ after you: a lone mercenary at first, soldiers and their officers if you keep it
 | your fame in the current hold is high | **Favored of the Hold**: better prices with its merchants |
 | your infamy is (and always was) very low | **Clean Hands**: slightly better prices everywhere |
 | your infamy is high | **Dread**: intimidation comes easily |
+| your renown is high | **Known Hero**: new non-violent bounties are halved |
+| your infamy and renown are both high | **Feared and Respected**: hunter parties come one tier lighter |
+
+## Hold life (1.1)
+- **Friends where you're admired.** In a hold where you are Favored, residents you have no history with (the game's
+  neutral relationship rank only) become your friends. That is the game's own friendship: friendly greetings, free
+  low-value items and a bed in their homes, and it counts toward becoming Thane. Because friends now come easier,
+  the friends needed for thanehood go up from 5 to 8 in major holds and from 3 to 5 in minor ones (both adjustable).
+- **Rivals where you're infamous.** Where your infamy in a hold reaches 30, its neutral residents turn cold (the
+  game's rival rank). They calm down again when your infamy fades.
+- **Gifts.** Entering a town where you are Favored, a friend may walk up, greet you and hand you something local
+  (35% per visit, at most once every 3 days per hold; rarer gifts at fame 80+).
+- **House prices.** The five city houses cost up to twice as much at infamy 100 in that hold and up to 15% less at
+  fame 100, starting from whatever price your load order set. Turn this off in the MCM before uninstalling to put the
+  prices back.
+- An MCM button undoes every friend and rival the mod made (thane progress already earned stays).
+- **With Skyrim Reputation installed**, friends and rivals start switched off: Skyrim Reputation reads those ranks with
+  some NPCs as favors done and with beggars as charity. Switch them on in the MCM if you want both.
 
 ## Settings and status
 An MCM page (MCM Helper) shows your renown, infamy, and each hold's reputation and bounty, and has every number:
-decay speed, infamy rates and floor, hunter threshold and interval, perk thresholds, notifications, debug log.
+decay speed, infamy rates and floor, hunter threshold and interval, perk thresholds, hold life (friends, rivals,
+gifts, house prices, thane requirements), notifications, debug log.
+
+## Updating from 1.0
+Save safety: every 1.0 record keeps its form ID, and the new ones come after them, so 1.1 installs over 1.0 on an
+existing save. Hold life starts on its own after the first load.
 
 ## Which quests count
 The mod ships rules for the base game, its DLCs and Creation Club content

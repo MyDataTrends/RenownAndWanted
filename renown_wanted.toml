@@ -196,6 +196,7 @@ desc = "Your infamy goes before you: intimidation comes easily."
 edid = "RW_MCMQuest"
 name = "Renown and Wanted MCM"
 script = "RW_MCM"
+props = { MainQuest = "RW_MainQuest" }
 
 [[quest]]
 edid = "RW_MainQuest"
@@ -278,3 +279,151 @@ gRepScale = "RW_RepScale"
 gDebugBounty = "RW_DebugBounty"
 ActorTypeDragon = "ActorTypeDragon"
 LocTypePlayerHouse = "LocTypePlayerHouse"
+
+# ---- 1.1 (2026-10-30): hold life
+gFriendsOn = "RW_FriendsOn"
+gRivalsOn = "RW_RivalsOn"
+gRivalThreshold = "RW_RivalThreshold"
+gGiftsOn = "RW_GiftsOn"
+gGiftChance = "RW_GiftChance"
+gGiftCooldown = "RW_GiftCooldown"
+gHousePricesOn = "RW_HousePricesOn"
+gHouseSurcharge = "RW_HouseSurcharge"
+gHouseDiscount = "RW_HouseDiscount"
+gThaneMajor = "RW_ThaneMajor"
+gThaneMinor = "RW_ThaneMinor"
+FriendsTotalMajorHold = "FriendsTotalMajorHold"
+FriendsTotalMinorHold = "FriendsTotalMinorHold"
+HPWhiterun = "HPWhiterun"
+HPWindhelm = "HPWindhelm"
+HPRiften = "HPRiften"
+HPSolitude = "HPSolitude"
+HPMarkarth = "HPMarkarth"
+RelationshipHellos = "DialoguePlayerRelationshipHellos"
+GiftsWhiterun = "RW_GiftsWhiterun"
+GiftsEastmarch = "RW_GiftsEastmarch"
+GiftsRift = "RW_GiftsRift"
+GiftsHaafingar = "RW_GiftsHaafingar"
+GiftsReach = "RW_GiftsReach"
+GiftsPale = "RW_GiftsPale"
+GiftsFalkreath = "RW_GiftsFalkreath"
+GiftsHjaalmarch = "RW_GiftsHjaalmarch"
+GiftsWinterhold = "RW_GiftsWinterhold"
+GiftsRare = "RW_GiftsRare"
+
+# 1.1 forms: late = true, so their ids come after every 1.0 form (saves keep their references)
+
+[[global]]
+edid = "RW_FriendsOn"
+value = 1.0
+late = true
+
+[[global]]
+edid = "RW_RivalsOn"
+value = 1.0
+late = true
+
+[[global]]
+edid = "RW_RivalThreshold"
+value = 30.0
+late = true
+
+[[global]]
+edid = "RW_GiftsOn"
+value = 1.0
+late = true
+
+[[global]]
+edid = "RW_GiftChance"
+value = 35.0
+late = true
+
+[[global]]
+edid = "RW_GiftCooldown"
+value = 3.0
+late = true
+
+[[global]]
+edid = "RW_HousePricesOn"
+value = 1.0
+late = true
+
+[[global]]
+edid = "RW_HouseSurcharge"
+value = 100.0
+late = true
+
+[[global]]
+edid = "RW_HouseDiscount"
+value = 15.0
+late = true
+
+[[global]]
+edid = "RW_ThaneMajor"
+value = 8.0
+late = true
+
+[[global]]
+edid = "RW_ThaneMinor"
+value = 5.0
+late = true
+
+[[record]]
+type = "FLST"
+edid = "RW_GiftsWhiterun"
+subs = [{ sig = "LNAM", ref = "FoodSweetroll" }, { sig = "LNAM", ref = "FoodHonningbrewMead" }, { sig = "LNAM", ref = "FoodBread01B" }, { sig = "LNAM", ref = "FoodPie" }, { sig = "LNAM", ref = "RestoreHealth01" }]
+late = true
+
+[[record]]
+type = "FLST"
+edid = "RW_GiftsEastmarch"
+subs = [{ sig = "LNAM", ref = "FoodMead" }, { sig = "LNAM", ref = "FoodHorkerStew" }, { sig = "LNAM", ref = "FoodVenisonStew" }, { sig = "LNAM", ref = "BearPelt" }]
+late = true
+
+[[record]]
+type = "FLST"
+edid = "RW_GiftsRift"
+subs = [{ sig = "LNAM", ref = "FoodBlackBriarMead" }, { sig = "LNAM", ref = "FoodSalmonCooked" }, { sig = "LNAM", ref = "Lavender" }, { sig = "LNAM", ref = "FoodPie" }]
+late = true
+
+[[record]]
+type = "FLST"
+edid = "RW_GiftsHaafingar"
+subs = [{ sig = "LNAM", ref = "FoodWineAltoA" }, { sig = "LNAM", ref = "FoodSolitudeSpicedWine" }, { sig = "LNAM", ref = "FoodCheeseWheel02A" }, { sig = "LNAM", ref = "JewelryRingGold" }]
+late = true
+
+[[record]]
+type = "FLST"
+edid = "RW_GiftsReach"
+subs = [{ sig = "LNAM", ref = "JewelryRingSilver" }, { sig = "LNAM", ref = "JewelryNecklaceSilver" }, { sig = "LNAM", ref = "GemGarnet" }, { sig = "LNAM", ref = "FoodBread01B" }]
+late = true
+
+[[record]]
+type = "FLST"
+edid = "RW_GiftsPale"
+subs = [{ sig = "LNAM", ref = "FoodHorkerMeat" }, { sig = "LNAM", ref = "FoodSalmonCooked" }, { sig = "LNAM", ref = "Snowberry" }, { sig = "LNAM", ref = "FoodMead" }]
+late = true
+
+[[record]]
+type = "FLST"
+edid = "RW_GiftsFalkreath"
+subs = [{ sig = "LNAM", ref = "FoodVenisonCooked" }, { sig = "LNAM", ref = "FoodVenisonStew" }, { sig = "LNAM", ref = "JuniperBerries" }, { sig = "LNAM", ref = "WolfPelt" }]
+late = true
+
+[[record]]
+type = "FLST"
+edid = "RW_GiftsHjaalmarch"
+subs = [{ sig = "LNAM", ref = "SwampFungalPod01" }, { sig = "LNAM", ref = "deathBell" }, { sig = "LNAM", ref = "Nirnroot" }, { sig = "LNAM", ref = "RestoreHealth02" }]
+late = true
+
+[[record]]
+type = "FLST"
+edid = "RW_GiftsWinterhold"
+subs = [{ sig = "LNAM", ref = "SoulGemPettyFilled" }, { sig = "LNAM", ref = "SoulGemLesserFilled" }, { sig = "LNAM", ref = "FoodMead" }, { sig = "LNAM", ref = "FoodHorkerStew" }]
+late = true
+
+[[record]]
+type = "FLST"
+edid = "RW_GiftsRare"
+subs = [{ sig = "LNAM", ref = "GemGarnetFlawless" }, { sig = "LNAM", ref = "JewelryRingGold" }, { sig = "LNAM", ref = "JewelryNecklaceSilver" }, { sig = "LNAM", ref = "SoulGemLesserFilled" }]
+late = true

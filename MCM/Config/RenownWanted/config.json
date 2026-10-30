@@ -492,6 +492,148 @@
       ]
     },
     {
+      "pageDisplayName": "Hold life",
+      "cursorFillMode": "topToBottom",
+      "content": [
+        {
+          "text": "Friends in admired holds",
+          "type": "toggle",
+          "help": "Residents (neutral rank only) of a hold where you are Favored become your friends: vanilla's friendly greetings, low-value items and beds in their homes, and they count toward thanehood (see below). Off by default when Skyrim Reputation is installed.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|82D"
+          }
+        },
+        {
+          "text": "Rivals where you are infamous",
+          "type": "toggle",
+          "help": "Residents (neutral rank only) of a hold where your infamy is high become rivals (vanilla's cold greetings). They calm down when the infamy fades. Off by default when Skyrim Reputation is installed.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|82E"
+          }
+        },
+        {
+          "text": "Rivals at infamy",
+          "type": "slider",
+          "help": "Infamy in that hold.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|82F",
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Friends needed for thane (major holds)",
+          "type": "slider",
+          "help": "Vanilla 5. Raised because friends made here count toward thanehood.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|836",
+            "min": 1,
+            "max": 20,
+            "step": 1,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Friends needed for thane (minor holds)",
+          "type": "slider",
+          "help": "Vanilla 3.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|837",
+            "min": 1,
+            "max": 15,
+            "step": 1,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Gifts from friends",
+          "type": "toggle",
+          "help": "Entering a town where you are Favored, a friend may walk up, greet you and hand you a local gift.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|830"
+          }
+        },
+        {
+          "text": "Gift chance per visit (%)",
+          "type": "slider",
+          "help": "",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|831",
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Days between gifts (per hold)",
+          "type": "slider",
+          "help": "",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|832",
+            "min": 0,
+            "max": 14,
+            "step": 1,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "House prices follow your standing",
+          "type": "toggle",
+          "help": "The city house's price in that hold (Whiterun, Windhelm, Riften, Solitude, Markarth). Turn off before uninstalling to restore the prices.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|833"
+          }
+        },
+        {
+          "text": "Surcharge at infamy 100 (%)",
+          "type": "slider",
+          "help": "Scales with the hold's infamy.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|834",
+            "min": 0,
+            "max": 200,
+            "step": 10,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Discount at fame 100 (%)",
+          "type": "slider",
+          "help": "Scales with the hold's fame.",
+          "valueOptions": {
+            "sourceType": "GlobalValue",
+            "sourceForm": "RenownWanted.esp|835",
+            "min": 0,
+            "max": 50,
+            "step": 5,
+            "formatString": "{0}"
+          }
+        },
+        {
+          "text": "Undo friends and rivals",
+          "type": "text",
+          "help": "Everyone this mod made a friend or rival goes back to neutral (if they still have that rank). Thane progress already made stays.",
+          "action": {
+            "type": "CallFunction",
+            "function": "ResetRelationships"
+          }
+        }
+      ]
+    },
+    {
       "pageDisplayName": "General",
       "cursorFillMode": "topToBottom",
       "content": [
