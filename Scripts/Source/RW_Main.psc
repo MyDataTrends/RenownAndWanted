@@ -825,6 +825,7 @@ Function UpdateRelationships(Actor player, int h)
 	bool rivals = gRivalsOn.GetValue() > 0.5 && infG[h].GetValue() >= gRivalThreshold.GetValue()
 	Actor[] near = PO3_SKSEFunctions.GetActorsByProcessingLevel(0)
 	int made = 0
+	int calmed = 0
 	int i = 0
 	while i < near.Length
 		Actor a = near[i]
@@ -843,6 +844,7 @@ Function UpdateRelationships(Actor player, int h)
 			elseif rank == -1 && !rivals && StorageUtil.FormListHas(None, "RW_Rivals", a)
 				a.SetRelationshipRank(player, 0)  ; infamy faded: the grudge goes with it
 				StorageUtil.FormListRemove(None, "RW_Rivals", a, true)
+				calmed += 1
 				if friends
 					a.SetRelationshipRank(player, 1)
 					StorageUtil.FormListAdd(None, "RW_Friends", a, false)
@@ -851,7 +853,7 @@ Function UpdateRelationships(Actor player, int h)
 		endif
 		i += 1
 	endwhile
-	Log("hold " + h + ": fame " + Fame(h) + ", infamy " + infG[h].GetValue() + ", " + near.Length + " actors loaded, " + made + " now friends/rivals (friends " + friends + ", rivals " + rivals + ")")
+	Log("hold " + h + ": fame " + Fame(h) + ", infamy " + infG[h].GetValue() + ", " + near.Length + " actors loaded, " + made + " now friends/rivals, " + calmed + " rivals calmed (friends " + friends + ", rivals " + rivals + ")")
 EndFunction
 
 ; MCM: everyone this mod befriended or turned into a rival goes back to neutral, if they still have that rank
@@ -879,6 +881,7 @@ Function ResetRelationships()
 	StorageUtil.FormListClear(None, "RW_Friends")
 	StorageUtil.FormListClear(None, "RW_Rivals")
 	Debug.Notification("Renown and Wanted: " + n + " residents back to neutral.")
+	Log("undo: " + n + " residents back to neutral")
 EndFunction
 
 ; The hold's city house: its price as the load order set it, + up to gHouseSurcharge % at infamy 100 there,
@@ -896,6 +899,7 @@ Function UpdateHousePrice(int h)
 		mult = 1.0 + gHouseSurcharge.GetValue() / 100.0 * infG[h].GetValue() / 100.0 - gHouseDiscount.GetValue() / 100.0 * Fame(h) / 100.0
 	endif
 	g.SetValue(Math.Floor(hpBase[h] * mult + 0.5) as float)
+	Log("house price in hold " + h + ": " + g.GetValue() + " (base " + hpBase[h] + ")")
 EndFunction
 
 ; Entering a town where the hold admires you: a chance (per visit, with a cooldown per hold) that a friend brings a gift.
